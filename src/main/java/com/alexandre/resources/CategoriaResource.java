@@ -3,22 +3,27 @@ package com.alexandre.resources;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alexandre.domain.Categoria;
+import com.alexandre.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
+
+	@Autowired
+	private CategoriaService categoriaService;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
-		
-		//List<Categoria> categorias;
-		return Arrays.asList(new Categoria(1, "informática"),
-				new Categoria(2, "papelaria"));
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id ) {
+		Categoria categoria = categoriaService.buscar(id);
+		return ResponseEntity.ok(categoria);
 	}
 
 }
